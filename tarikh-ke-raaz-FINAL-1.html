@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تاریخ کے راز — Card Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0b14;color:#fff;font-family:'Noto Nastaliq Urdu','Segoe UI',serif;direction:rtl;min-height:100vh}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-left:8px}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#1a0a2e,#2d1b4e);padding:24px 20px;text-align:center;border-bottom:2px solid #8b1a1a;box-shadow:0 4px 20px rgba(139,26,26,0.3)}
+header .badge{font-size:10px;color:#e8c97e;letter-spacing:3px;font-family:sans-serif;text-transform:uppercase;margin-bottom:8px}
+header h1{font-size:32px;color:#e8c97e;font-family:'Noto Nastaliq Urdu',serif}
+header p{color:#9b89c4;font-size:12px;margin-top:6px;font-family:sans-serif}
+
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:28px 16px}
+
+/* MODE SELECTOR */
+.mode-select{margin-bottom:28px}
+.mode-select h2{text-align:center;color:#9b89c4;font-size:15px;margin-bottom:20px}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mode-btn{background:linear-gradient(135deg,#1c1025,#2d1b4e);border:2px solid #3d1f5e;border-radius:18px;padding:32px 20px;cursor:pointer;text-align:center;transition:all 0.25s;user-select:none}
+.mode-btn:hover{border-color:#e8c97e;transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,26,26,0.3)}
+.mode-btn .em{font-size:44px;margin-bottom:14px}
+.mode-btn .mt{color:#e8c97e;font-size:18px;margin-bottom:8px}
+.mode-btn .ms{color:#9b89c4;font-size:12px;font-family:sans-serif;direction:ltr;line-height:1.5}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn 0.3s ease}
+.panel.active{display:block}
+
+.back-btn{background:transparent;color:#9b89c4;border:1px solid #3d1f5e;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;margin-bottom:24px;font-family:sans-serif;direction:ltr;transition:all 0.2s}
+.back-btn:hover{border-color:#e8c97e;color:#e8c97e}
+
+/* UPLOAD AREA */
+.upload-area{border:2px dashed #5d2b8e;border-radius:18px;padding:48px 24px;text-align:center;cursor:pointer;transition:all 0.25s;margin-bottom:20px;position:relative}
+.upload-area:hover{border-color:#e8c97e;background:rgba(45,27,78,0.3)}
+.upload-area input[type=file]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.upload-area .ua-icon{font-size:52px;margin-bottom:14px;pointer-events:none}
+.upload-area .ua-title{color:#e8c97e;font-size:19px;margin-bottom:8px;pointer-events:none}
+.upload-area .ua-sub{color:#9b89c4;font-size:13px;font-family:sans-serif;pointer-events:none}
+.upload-area .ua-btn{display:inline-block;background:#8b1a1a;color:#fff;padding:12px 28px;border-radius:10px;margin-top:16px;font-size:15px;font-family:inherit;pointer-events:none}
+
+/* THUMBNAILS */
+.thumbs{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.thumb{position:relative;width:72px;height:72px}
+.thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;border:2px solid #555;display:block}
+.thumb .ts{position:absolute;bottom:-2px;left:0;right:0;text-align:center;font-size:15px}
+.thumb.done img{border-color:#16a34a}
+.thumb.processing img{border-color:#d97706}
+.thumb.error img{border-color:#dc2626}
+
+/* BUTTONS */
+.big-btn{width:100%;padding:16px;border-radius:12px;border:none;font-size:17px;cursor:pointer;font-family:inherit;transition:all 0.25s;margin-bottom:16px}
+.big-btn.red{background:linear-gradient(135deg,#8b1a1a,#c0392b);color:#fff;box-shadow:0 4px 18px rgba(139,26,26,0.4)}
+.big-btn.red:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(139,26,26,0.5)}
+.big-btn:disabled{background:#2a1a1a!important;color:#666!important;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* TEXT INPUT */
+.text-panel-box{background:#1c1025;border:1px solid #3d1f5e;border-radius:18px;padding:24px;margin-bottom:16px}
+.text-panel-box label{color:#e8c97e;font-size:15px;display:block;margin-bottom:12px}
+.text-panel-box textarea{width:100%;background:#110d1a;border:1px solid #3d1f5e;border-radius:12px;color:#fff;padding:16px;font-family:'Noto Nastaliq Urdu',serif;font-size:19px;line-height:2.2;direction:rtl;resize:vertical;min-height:130px;transition:border-color 0.2s}
+.text-panel-box textarea:focus{outline:none;border-color:#8b1a1a}
+
+/* PROGRESS */
+.progress-box{background:#1c1025;border:1px solid #3d1f5e;border-radius:14px;padding:18px;margin-bottom:20px;display:none}
+.progress-box.show{display:block}
+.step-lbl{color:#e8c97e;font-size:13px;margin-bottom:10px;font-family:sans-serif;direction:ltr;word-break:break-word}
+.prog-track{background:#0a0812;border-radius:20px;height:8px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#8b1a1a,#e8c97e);border-radius:20px;transition:width 0.5s;width:0%}
+.prog-num{color:#9b89c4;font-size:12px;margin-top:8px;font-family:sans-serif;direction:ltr}
+
+/* GALLERY */
+.gallery{margin-top:28px}
+.gallery-hdr{text-align:center;color:#e8c97e;font-size:20px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid #3d1f5e}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+
+/* CARD WRAPPER */
+.cw{background:#1c1025;border-radius:18px;overflow:hidden;border:1px solid #3d1f5e;box-shadow:0 6px 28px rgba(0,0,0,0.5);animation:fadeIn 0.4s ease}
+
+/* THE FACT CARD (downloadable) */
+.fc{background:#fff;display:flex;flex-direction:column;overflow:hidden}
+.fc-img{position:relative;height:220px;background:#111;overflow:hidden;flex-shrink:0}
+.fc-img img{width:100%;height:100%;object-fit:cover;display:block}
+.fc-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(255,255,255,0.95) 100%)}
+.fc-img-border{position:absolute;top:8px;left:8px;right:8px;bottom:8px;border:2px solid rgba(139,26,26,0.4);pointer-events:none}
+.fc-badge{position:absolute;top:13px;right:13px;background:rgba(0,0,0,0.72);color:#e8c97e;font-size:10px;padding:4px 11px;border-radius:20px;font-family:sans-serif;letter-spacing:.8px;font-weight:600}
+.fc-body{background:#f7f5f0;padding:14px 16px 12px;border-top:3px solid #8b1a1a;min-height:120px;display:flex;flex-direction:column;justify-content:center}
+.fc-kia{color:#8b1a1a;font-size:10px;font-weight:700;text-align:center;margin-bottom:10px;font-family:sans-serif;letter-spacing:1.8px;text-transform:uppercase}
+.fc-urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:18px;line-height:2.2;color:#111;text-align:right;direction:rtl}
+.fc-wm{color:#ccc;font-size:9px;text-align:left;margin-top:8px;font-family:sans-serif}
+
+/* CARD ACTIONS */
+.ca{display:flex;gap:10px;padding:14px;background:#110d1a}
+.ca-dl{flex:1;background:#8b1a1a;color:#fff;border:none;padding:11px;border-radius:9px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:700;transition:background 0.2s}
+.ca-dl:hover{background:#a52020}
+.ca-ed{flex:1;background:#2d1b4e;color:#e8c97e;border:1px solid #5d2b8e;padding:11px;border-radius:9px;cursor:pointer;font-size:14px;font-family:inherit;transition:all 0.2s}
+.ca-ed:hover{background:#3d2b5e}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.modal.open{display:flex}
+.modal-box{background:#1c1025;border:2px solid #8b1a1a;border-radius:18px;padding:26px;width:100%;max-width:500px;box-shadow:0 12px 48px rgba(0,0,0,0.7)}
+.modal-box h3{color:#e8c97e;margin-bottom:16px;font-size:18px}
+.modal-box textarea{width:100%;background:#110d1a;border:1px solid #3d1f5e;border-radius:10px;color:#fff;padding:14px;font-family:'Noto Nastaliq Urdu',serif;font-size:18px;line-height:2.1;direction:rtl;resize:vertical;min-height:120px}
+.modal-box textarea:focus{outline:none;border-color:#8b1a1a}
+.modal-acts{display:flex;gap:12px;margin-top:16px}
+.modal-save{flex:1;background:#8b1a1a;color:#fff;border:none;padding:13px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700}
+.modal-cancel{flex:1;background:#2d1b4e;color:#9b89c4;border:1px solid #3d1f5e;padding:13px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:15px}
+
+@media(max-width:500px){
+  .mode-grid{grid-template-columns:1fr}
+  .cards-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">✦ AI Powered ✦</div>
+  <h1>تاریخ کے راز</h1>
+  <p>Automated Urdu Fact Card Generator</p>
+</header>
+
+<div class="container">
+
+  <!-- MODE SELECT -->
+  <div class="mode-select" id="modeSelect">
+    <h2>کارڈ کس طرح بنانا ہے؟</h2>
+    <div class="mode-grid">
+      <div class="mode-btn" onclick="showPanel('ss')">
+        <div class="em">📸</div>
+        <div class="mt">اسکرین شاٹ سے</div>
+        <div class="ms">Upload screenshots — AI reads Urdu text automatically & finds matching image</div>
+      </div>
+      <div class="mode-btn" onclick="showPanel('tx')">
+        <div class="em">✍️</div>
+        <div class="mt">خود لکھیں</div>
+        <div class="ms">Type your own Urdu fact — AI finds the perfect matching image</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENSHOT PANEL -->
+  <div class="panel" id="ssPanel">
+    <button class="back-btn" onclick="showMode()">← واپس</button>
+
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
+      <div class="ua-icon">📂</div>
+      <div class="ua-title">یہاں کلک کریں یا تصاویر ڈراپ کریں</div>
+      <div class="ua-sub">ایک ساتھ کئی screenshots منتخب کریں</div>
+      <div class="ua-btn">تصاویر منتخب کریں</div>
+    </div>
+
+    <div class="thumbs" id="thumbs"></div>
+
+    <button class="big-btn red" id="processBtn" style="display:none" onclick="processScreenshots()">
+      ✨ کارڈ بنائیں
+    </button>
+  </div>
+
+  <!-- TEXT PANEL -->
+  <div class="panel" id="txPanel">
+    <button class="back-btn" onclick="showMode()">← واپس</button>
+    <div class="text-panel-box">
+      <label>اپنا فیکٹ اردو میں لکھیں 👇</label>
+      <textarea id="manualTxt" placeholder="مثلاً: انسانی دماغ روزانہ تقریباً 70,000 خیالات پیدا کرتا ہے۔"></textarea>
+      <button class="big-btn red" id="txtBtn" onclick="processText()" style="margin-top:14px;margin-bottom:0">
+        ✨ کارڈ بنائیں
+      </button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-box" id="progressBox">
+    <div class="step-lbl" id="stepLbl">...</div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-num" id="progNum"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery" id="gallery" style="display:none">
+    <div class="gallery-hdr" id="gallHdr">✅ تیار کارڈز</div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
+  <div class="modal-box">
+    <h3>متن تبدیل کریں</h3>
+    <textarea id="editTa" rows="5"></textarea>
+    <div class="modal-acts">
+      <button class="modal-save" onclick="saveEdit()">✅ محفوظ کریں</button>
+      <button class="modal-cancel" onclick="closeModal()">منسوخ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+const MODEL = 'claude-sonnet-4-20250514';
+let allFiles  = [];   // {file, url, status}
+let cards     = [];   // {text, imageUrl}
+let busy      = false;
+let editIdx   = -1;
+
+// ─── UI helpers ──────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const sh = id => $(id).style.display = '';
+const hi = id => $(id).style.display = 'none';
+
+function showPanel(name) {
+  hi('modeSelect');
+  $('ssPanel').classList.remove('active');
+  $('txPanel').classList.remove('active');
+  $(name === 'ss' ? 'ssPanel' : 'txPanel').classList.add('active');
+}
+function showMode() {
+  sh('modeSelect');
+  $('ssPanel').classList.remove('active');
+  $('txPanel').classList.remove('active');
+}
+
+// ─── File handling ───────────────────────────────────────
+function handleFiles(fileList) {
+  Array.from(fileList).filter(f => f.type.startsWith('image/')).forEach(f => {
+    allFiles.push({ file: f, url: URL.createObjectURL(f), status: 'pending' });
+  });
+  renderThumbs();
+  $('processBtn').style.display = allFiles.length ? '' : 'none';
+  $('fileInput').value = '';
+}
+
+function renderThumbs() {
+  const box = $('thumbs');
+  box.innerHTML = '';
+  allFiles.forEach((f, i) => {
+    const icons = { pending:'', processing:'⟳', done:'✅', error:'❌' };
+    const d = document.createElement('div');
+    d.className = 'thumb ' + f.status;
+    d.innerHTML = `<img src="${f.url}"><div class="ts">${icons[f.status]||''}</div>`;
+    box.appendChild(d);
+  });
+}
+
+function setStatus(i, s) { allFiles[i].status = s; renderThumbs(); }
+
+// ─── Base64 ───────────────────────────────────────────────
+function toB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+// ─── Claude API ──────────────────────────────────────────
+async function claude(messages) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: MODEL, max_tokens: 800, messages })
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message);
+  return d.content.map(b => b.text || '').join('').trim();
+}
+
+async function extractText(b64, mime) {
+  return claude([{ role:'user', content:[
+    { type:'image', source:{ type:'base64', media_type:mime, data:b64 } },
+    { type:'text',  text:'Is image mein jo Urdu fact text hai woh likho. Sirf main fact sentences. Headings, channel name, watermark bilkul mat likho.' }
+  ]}]);
+}
+
+async function getImage(text, seed) {
+  try {
+    const kw = await claude([{ role:'user',
+      content:`Urdu text: "${text}"\nGive 2 English keywords for Unsplash image search. ONLY keywords, nothing else.`
+    }]);
+    const r = await fetch(
+      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(kw)}&orientation=landscape&client_id=BVnR8OWvXnMWMKXgFlV9rrD1E1aSxNDoRCFhg2b6DGA`
+    );
+    if (r.ok) {
+      const d = await r.json();
+      if (d.urls?.regular) return d.urls.regular;
+    }
+  } catch {}
+  return `https://picsum.photos/seed/${seed}/800/450`;
+}
+
+// ─── Process screenshots ─────────────────────────────────
+async function processScreenshots() {
+  if (!allFiles.length || busy) return;
+  busy = true;
+  const btn = $('processBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> پروسیسنگ...';
+
+  const pb = $('progressBox'); pb.classList.add('show');
+  sh('gallery');
+  const total = allFiles.length;
+
+  for (let i = 0; i < total; i++) {
+    $('progFill').style.width = Math.round(i / total * 100) + '%';
+    $('progNum').textContent  = `${i} / ${total}`;
+    setStatus(i, 'processing');
+
+    try {
+      $('stepLbl').textContent = `[${i+1}/${total}] Reading text from image...`;
+      const b64  = await toB64(allFiles[i].file);
+      const text = await extractText(b64, allFiles[i].file.type);
+
+      $('stepLbl').textContent = `[${i+1}/${total}] Finding matching image...`;
+      const img  = await getImage(text, i + Date.now());
+
+      cards.push({ text, imageUrl: img });
+      addCard(cards.length - 1);
+      setStatus(i, 'done');
+    } catch (e) {
+      setStatus(i, 'error');
+      console.error(e);
+    }
+  }
+
+  $('progFill').style.width = '100%';
+  $('progNum').textContent  = `${total} / ${total}`;
+  $('stepLbl').textContent  = '✅ All cards ready!';
+  $('gallHdr').textContent  = `✅ تیار کارڈز — ${cards.length}`;
+  btn.innerHTML = `✅ مکمل (${total} کارڈ)`;
+  busy = false;
+}
+
+// ─── Process manual text ─────────────────────────────────
+async function processText() {
+  const text = $('manualTxt').value.trim();
+  if (!text || busy) return;
+  busy = true;
+
+  const btn = $('txtBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> بن رہا ہے...';
+
+  const pb = $('progressBox'); pb.classList.add('show');
+  $('stepLbl').textContent = 'Finding matching image...';
+  $('progFill').style.width = '40%';
+
+  try {
+    const img = await getImage(text, Date.now());
+    cards.push({ text, imageUrl: img });
+    sh('gallery');
+    addCard(cards.length - 1);
+    $('gallHdr').textContent = `✅ تیار کارڈز — ${cards.length}`;
+    $('stepLbl').textContent = '✅ Card ready!';
+    $('progFill').style.width = '100%';
+    $('manualTxt').value = '';
+  } catch (e) {
+    $('stepLbl').textContent = 'Error: ' + e.message;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '✨ کارڈ بنائیں';
+  busy = false;
+}
+
+// ─── Render card ─────────────────────────────────────────
+function addCard(idx) {
+  const c   = cards[idx];
+  const div = document.createElement('div');
+  div.className = 'cw';
+  div.innerHTML = `
+    <div class="fc" id="fc${idx}">
+      <div class="fc-img">
+        <img src="${c.imageUrl}" crossorigin="anonymous"
+          onerror="this.src='https://picsum.photos/seed/${idx+200}/800/450'">
+        <div class="fc-img-overlay"></div>
+        <div class="fc-img-border"></div>
+        <div class="fc-badge">Tarikh Ke Raaz</div>
+      </div>
+      <div class="fc-body">
+        <div class="fc-kia">✦ کیا آپ جانتے ہیں؟ ✦</div>
+        <div class="fc-urdu" id="fct${idx}">${c.text}</div>
+        <div class="fc-wm">@TarikhKeRaaz</div>
+      </div>
+    </div>
+    <div class="ca">
+      <button class="ca-dl" onclick="dlCard(${idx})">⬇ ڈاؤنلوڈ</button>
+      <button class="ca-ed" onclick="openEdit(${idx})">✏ ترمیم</button>
+    </div>`;
+  $('cardsGrid').appendChild(div);
+}
+
+// ─── Download ────────────────────────────────────────────
+async function dlCard(idx) {
+  const el = $('fc' + idx);
+  if (!el) return;
+  const btn = el.nextElementSibling.querySelector('.ca-dl');
+  btn.textContent = '⏳';
+  btn.disabled = true;
+  try {
+    const canvas = await html2canvas(el, {
+      scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff'
+    });
+    const a = document.createElement('a');
+    a.download = `tarikh-ke-raaz-${idx+1}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  } catch { alert('ڈاؤنلوڈ میں مسئلہ، دوبارہ کوشش کریں'); }
+  btn.textContent = '⬇ ڈاؤنلوڈ';
+  btn.disabled = false;
+}
+
+// ─── Edit ────────────────────────────────────────────────
+function openEdit(idx) {
+  editIdx = idx;
+  $('editTa').value = cards[idx].text;
+  $('editModal').classList.add('open');
+}
+function saveEdit() {
+  const t = $('editTa').value.trim();
+  if (t && editIdx >= 0) {
+    cards[editIdx].text = t;
+    $('fct' + editIdx).textContent = t;
+  }
+  closeModal();
+}
+function closeModal() { $('editModal').classList.remove('open'); editIdx = -1; }
+</script>
+</body>
+</html>
