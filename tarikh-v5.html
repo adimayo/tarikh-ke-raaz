@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تاریخ کے راز</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0b14;color:#fff;font-family:'Noto Nastaliq Urdu','Segoe UI',serif;direction:rtl;min-height:100vh}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-left:6px}
+header{background:linear-gradient(135deg,#1a0a2e,#2d1b4e);padding:20px;text-align:center;border-bottom:2px solid #8b1a1a}
+header h1{font-size:28px;color:#e8c97e}
+header p{color:#9b89c4;font-size:11px;margin-top:4px;font-family:sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:20px 14px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.mc{background:linear-gradient(135deg,#1c1025,#2d1b4e);border:2px solid #3d1f5e;border-radius:14px;padding:24px 14px;cursor:pointer;text-align:center;transition:all 0.2s}
+.mc:hover{border-color:#e8c97e;transform:translateY(-2px)}
+.mc .em{font-size:38px;margin-bottom:8px}
+.mc .mt{color:#e8c97e;font-size:16px;margin-bottom:4px}
+.mc .ms{color:#9b89c4;font-size:11px;font-family:sans-serif;direction:ltr}
+.panel{display:none}.panel.on{display:block;animation:fadeIn 0.3s ease}
+.back{background:transparent;color:#9b89c4;border:1px solid #3d1f5e;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;margin-bottom:18px;font-family:sans-serif;direction:ltr}
+.upzone{border:2px dashed #5d2b8e;border-radius:14px;padding:36px 16px;text-align:center;cursor:pointer;position:relative;margin-bottom:14px;transition:all 0.2s}
+.upzone:hover{border-color:#e8c97e}
+.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upzone .ui{font-size:44px;margin-bottom:8px;pointer-events:none}
+.upzone .ut{color:#e8c97e;font-size:16px;margin-bottom:4px;pointer-events:none}
+.upzone .us{color:#9b89c4;font-size:11px;font-family:sans-serif;pointer-events:none}
+.upzone .ub{display:inline-block;background:#8b1a1a;color:#fff;padding:9px 22px;border-radius:8px;margin-top:10px;font-size:13px;pointer-events:none}
+.thumbs{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.th{position:relative;width:64px;height:64px}
+.th img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:2px solid #555;display:block}
+.th .ts{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:13px}
+.bbtn{width:100%;padding:13px;border-radius:10px;border:none;font-size:15px;cursor:pointer;font-family:inherit;margin-bottom:12px;transition:all 0.2s}
+.bbtn.r{background:linear-gradient(135deg,#8b1a1a,#c0392b);color:#fff;box-shadow:0 4px 14px rgba(139,26,26,0.4)}
+.bbtn.r:hover{transform:translateY(-1px)}
+.bbtn:disabled{background:#2a1010!important;color:#555!important;cursor:not-allowed;transform:none!important}
+.tbox{background:#1c1025;border:1px solid #3d1f5e;border-radius:14px;padding:18px;margin-bottom:12px}
+.tbox label{color:#e8c97e;font-size:13px;display:block;margin-bottom:8px}
+.tbox textarea{width:100%;background:#110d1a;border:1px solid #3d1f5e;border-radius:9px;color:#fff;padding:12px;font-family:'Noto Nastaliq Urdu',serif;font-size:17px;line-height:2;direction:rtl;resize:vertical;min-height:110px}
+.tbox textarea:focus{outline:none;border-color:#8b1a1a}
+
+/* KEYWORD BOX */
+.kwbox{background:#1c1025;border:1px solid #3d1f5e;border-radius:14px;padding:16px;margin-bottom:12px}
+.kwbox label{color:#e8c97e;font-size:12px;display:block;margin-bottom:8px;font-family:sans-serif;direction:ltr}
+.kwbox input{width:100%;background:#110d1a;border:1px solid #3d1f5e;border-radius:8px;color:#fff;padding:10px 12px;font-family:sans-serif;font-size:13px;direction:ltr}
+.kwbox input:focus{outline:none;border-color:#8b1a1a}
+.kwbox .hint{color:#9b89c4;font-size:10px;margin-top:5px;font-family:sans-serif;direction:ltr}
+
+.pbox{background:#1c1025;border:1px solid #3d1f5e;border-radius:12px;padding:14px;margin-bottom:16px;display:none}
+.pbox.on{display:block}
+.plbl{color:#e8c97e;font-size:12px;margin-bottom:7px;font-family:sans-serif;direction:ltr}
+.ptr{background:#0a0812;border-radius:20px;height:6px;overflow:hidden}
+.pfl{height:100%;background:linear-gradient(90deg,#8b1a1a,#e8c97e);border-radius:20px;transition:width 0.4s;width:0%}
+.pnum{color:#9b89c4;font-size:11px;margin-top:5px;font-family:sans-serif;direction:ltr}
+.gal{margin-top:22px}
+.ghdr{text-align:center;color:#e8c97e;font-size:17px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #3d1f5e}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.cw{background:#1c1025;border-radius:14px;overflow:hidden;border:1px solid #3d1f5e;box-shadow:0 4px 18px rgba(0,0,0,0.5);animation:fadeIn 0.4s ease}
+.fc{background:#fff;display:flex;flex-direction:column}
+.fci{position:relative;height:200px;background:#111;overflow:hidden}
+.fci img{width:100%;height:100%;object-fit:cover;display:block}
+.fcio{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(255,255,255,0.95) 100%)}
+.fcib{position:absolute;top:7px;left:7px;right:7px;bottom:7px;border:2px solid rgba(139,26,26,0.4);pointer-events:none}
+.fcbg{position:absolute;top:11px;right:11px;background:rgba(0,0,0,0.72);color:#e8c97e;font-size:9px;padding:3px 9px;border-radius:20px;font-family:sans-serif;letter-spacing:.8px;font-weight:600}
+.fct{background:#f7f5f0;padding:12px 13px 9px;border-top:3px solid #8b1a1a;min-height:105px;display:flex;flex-direction:column;justify-content:center}
+.fck{color:#8b1a1a;font-size:9px;font-weight:700;text-align:center;margin-bottom:7px;font-family:sans-serif;letter-spacing:1.8px;text-transform:uppercase}
+.fcu{font-family:'Noto Nastaliq Urdu',serif;font-size:16px;line-height:2;color:#111;text-align:right;direction:rtl}
+.fcw{color:#ccc;font-size:8px;text-align:left;margin-top:5px;font-family:sans-serif}
+.ca{display:flex;gap:7px;padding:10px;background:#110d1a;flex-wrap:wrap}
+.cdl{flex:1;background:#8b1a1a;color:#fff;border:none;padding:9px;border-radius:7px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:700;min-width:70px}
+.ced{flex:1;background:#2d1b4e;color:#e8c97e;border:1px solid #5d2b8e;padding:9px;border-radius:7px;cursor:pointer;font-size:12px;font-family:inherit;min-width:70px}
+.cht{flex:1;background:#1a3a1a;color:#4ade80;border:1px solid #16a34a;padding:9px;border-radius:7px;cursor:pointer;font-size:12px;font-family:sans-serif;direction:ltr;min-width:70px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.modal.on{display:flex}
+.mbox{background:#1c1025;border:2px solid #8b1a1a;border-radius:14px;padding:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+.mbox h3{color:#e8c97e;margin-bottom:12px;font-size:16px}
+.mbox textarea{width:100%;background:#110d1a;border:1px solid #3d1f5e;border-radius:8px;color:#fff;padding:11px;font-family:'Noto Nastaliq Urdu',serif;font-size:16px;line-height:2;direction:rtl;resize:vertical}
+.mbox textarea:focus{outline:none;border-color:#8b1a1a}
+.macts{display:flex;gap:9px;margin-top:10px}
+.msv{flex:1;background:#8b1a1a;color:#fff;border:none;padding:11px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px}
+.mcn{flex:1;background:#2d1b4e;color:#9b89c4;border:1px solid #3d1f5e;padding:11px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px}
+.hmodal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.hmodal.on{display:flex}
+.hmbox{background:#1c1025;border:2px solid #16a34a;border-radius:14px;padding:20px;width:100%;max-width:480px}
+.hmbox h3{color:#4ade80;margin-bottom:12px;font-size:15px;font-family:sans-serif;direction:ltr}
+.htag-list{display:flex;flex-wrap:wrap;gap:6px;direction:ltr;margin-bottom:12px;max-height:200px;overflow-y:auto}
+.htag-item{background:#1a3a1a;border:1px solid #16a34a;border-radius:20px;padding:4px 10px;font-size:11px;color:#4ade80;font-family:sans-serif}
+.hcopy{width:100%;background:#16a34a;color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-family:sans-serif;font-size:13px;direction:ltr}
+.hclose{width:100%;background:#2d1b4e;color:#9b89c4;border:1px solid #3d1f5e;padding:9px;border-radius:8px;cursor:pointer;font-family:sans-serif;font-size:13px;direction:ltr;margin-top:7px}
+@media(max-width:480px){.mgrid{grid-template-columns:1fr}.cgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div style="font-size:9px;color:#e8c97e;letter-spacing:3px;font-family:sans-serif;text-transform:uppercase;margin-bottom:5px">✦ AI Powered ✦</div>
+  <h1>تاریخ کے راز</h1>
+  <p>Automated Urdu Fact Card Generator v5.0</p>
+</header>
+<div class="wrap">
+  <div id="ms">
+    <div style="text-align:center;color:#9b89c4;margin-bottom:16px;font-size:13px">کارڈ کس طرح بنانا ہے؟</div>
+    <div class="mgrid">
+      <div class="mc" onclick="show('ss')"><div class="em">📸</div><div class="mt">اسکرین شاٹ سے</div><div class="ms">Upload screenshots — AI reads text</div></div>
+      <div class="mc" onclick="show('tx')"><div class="em">✍️</div><div class="mt">خود لکھیں</div><div class="ms">Type Urdu fact manually</div></div>
+    </div>
+  </div>
+
+  <!-- SS PANEL -->
+  <div class="panel" id="ss">
+    <button class="back" onclick="back()">← واپس</button>
+    <div class="upzone">
+      <input type="file" id="fi" accept="image/*" multiple onchange="addFiles(this.files)">
+      <div class="ui">📂</div>
+      <div class="ut">یہاں کلک کریں — تصاویر منتخب کریں</div>
+      <div class="us">ایک ساتھ کئی screenshots</div>
+      <div class="ub">تصاویر منتخب کریں</div>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="kwbox">
+      <label>🔍 Custom Keywords (optional — leave blank for auto)</label>
+      <input type="text" id="kwSS" placeholder="e.g: earth core, human brain, ancient egypt" dir="ltr">
+      <div class="hint">💡 English keywords = better image matching. Leave blank = AI auto-selects</div>
+    </div>
+    <button class="bbtn r" id="pb" style="display:none" onclick="procSS()">✨ کارڈ بنائیں</button>
+  </div>
+
+  <!-- TX PANEL -->
+  <div class="panel" id="tx">
+    <button class="back" onclick="back()">← واپس</button>
+    <div class="tbox">
+      <label>اپنا فیکٹ اردو میں لکھیں 👇</label>
+      <textarea id="mt" placeholder="مثلاً: زمین کے مرکز کا درجہ حرارت سورج کی سطح جتنا گرم ہے۔"></textarea>
+    </div>
+    <div class="kwbox">
+      <label>🔍 Custom Keywords (optional)</label>
+      <input type="text" id="kwTX" placeholder="e.g: earth core molten, solar system" dir="ltr">
+      <div class="hint">💡 Leave blank = AI will choose keywords automatically</div>
+    </div>
+    <button class="bbtn r" id="tb" onclick="procTX()" style="margin-bottom:0">✨ کارڈ بنائیں</button>
+  </div>
+
+  <div class="pbox" id="pb2">
+    <div class="plbl" id="plbl">...</div>
+    <div class="ptr"><div class="pfl" id="pfl"></div></div>
+    <div class="pnum" id="pnum"></div>
+  </div>
+
+  <div class="gal" id="gal" style="display:none">
+    <div class="ghdr" id="ghdr">✅ تیار کارڈز</div>
+    <div class="cgrid" id="cg"></div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="em">
+  <div class="mbox">
+    <h3>متن تبدیل کریں</h3>
+    <textarea id="eta" rows="5"></textarea>
+    <div class="macts">
+      <button class="msv" onclick="saveE()">✅ محفوظ</button>
+      <button class="mcn" onclick="closeE()">منسوخ</button>
+    </div>
+  </div>
+</div>
+
+<!-- HASHTAG MODAL -->
+<div class="hmodal" id="hm">
+  <div class="hmbox">
+    <h3>#️⃣ Hashtags for TikTok / Instagram</h3>
+    <div class="htag-list" id="hlist"></div>
+    <button class="hcopy" onclick="copyHT()">📋 Copy All Hashtags</button>
+    <button class="hclose" onclick="closeHM()">Close</button>
+  </div>
+</div>
+
+<script>
+const MODEL='claude-sonnet-4-20250514';
+let files=[],cards=[],busy=false,ei=-1,hi=-1;
+const $=id=>document.getElementById(id);
+
+function show(p){$('ms').style.display='none';$('ss').classList.remove('on');$('tx').classList.remove('on');$(p).classList.add('on');}
+function back(){$('ms').style.display='';$('ss').classList.remove('on');$('tx').classList.remove('on');}
+
+function addFiles(fl){
+  Array.from(fl).filter(f=>f.type.startsWith('image/')).forEach(f=>{
+    files.push({file:f,url:URL.createObjectURL(f),status:'p'});
+  });
+  drawThumbs();$('pb').style.display=files.length?'':'none';$('fi').value='';
+}
+function drawThumbs(){
+  const b=$('thumbs');b.innerHTML='';
+  const ic={p:'',processing:'⟳',done:'✅',err:'❌'};
+  const cl={p:'#555',processing:'#d97706',done:'#16a34a',err:'#dc2626'};
+  files.forEach(f=>{
+    const d=document.createElement('div');d.className='th';
+    d.innerHTML=`<img src="${f.url}" style="border-color:${cl[f.status]||'#555'}"><div class="ts">${ic[f.status]||''}</div>`;
+    b.appendChild(d);
+  });
+}
+function setSt(i,s){files[i].status=s;drawThumbs();}
+function b64(file){return new Promise((r,j)=>{const x=new FileReader();x.onload=e=>r(e.target.result.split(',')[1]);x.onerror=j;x.readAsDataURL(file);});}
+
+async function ai(msgs,mt=600){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:MODEL,max_tokens:mt,messages:msgs})
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.content.map(b=>b.text||'').join('').trim();
+}
+
+async function readImg(b,mime){
+  return ai([{role:'user',content:[
+    {type:'image',source:{type:'base64',media_type:mime,data:b}},
+    {type:'text',text:'Is image mein jo Urdu fact text likha hai woh copy karo. Sirf main fact sentences. Koi heading (Did You Know, Human Body etc), channel name, watermark bilkul mat likho.'}
+  ]}]);
+}
+
+async function getKW(text){
+  return ai([{role:'user',content:`Urdu fact: "${text}"
+Give 2-3 specific English keywords for Unsplash image search.
+Be very specific to the topic. Think what visual best shows this fact.
+Examples: "earth molten core", "human brain neuron", "ancient egypt pyramid"
+Reply ONLY keywords. Nothing else.`}]);
+}
+
+async function getHashtags(text){
+  return ai([{role:'user',content:`Urdu fact content: "${text}"
+Generate 20 TikTok/Instagram hashtags. Mix of English and Urdu hashtags.
+Include: topic hashtags, general knowledge hashtags, Urdu content hashtags.
+Format: #tag1 #tag2 #tag3
+Reply ONLY hashtags.`}],500);
+}
+
+async function findImage(text, manualKW){
+  const kw = manualKW || await getKW(text);
+  console.log('Using keywords:', kw);
+  const enc=encodeURIComponent(kw);
+  const seed=Math.floor(Math.random()*1000);
+
+  // Try multiple Unsplash queries
+  const queries=[kw, kw.split(' ').slice(0,2).join(' '), kw.split(' ')[0]];
+  for(const q of queries){
+    try{
+      const r=await fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(q)}&orientation=landscape&client_id=BVnR8OWvXnMWMKXgFlV9rrD1E1aSxNDoRCFhg2b6DGA&count=5`);
+      if(r.ok){
+        const d=await r.json();
+        const photos=Array.isArray(d)?d:[d];
+        if(photos.length){
+          const p=photos[Math.floor(Math.random()*photos.length)];
+          if(p.urls?.regular)return p.urls.regular;
+        }
+      }
+    }catch(e){console.log('Unsplash err:',e);}
+  }
+
+  // Fallback: topic based
+  return `https://source.unsplash.com/800x500/?${encodeURIComponent(kw.split(' ')[0])}&sig=${seed}`;
+}
+
+async function procSS(){
+  if(!files.length||busy)return;
+  busy=true;const btn=$('pb');btn.disabled=true;btn.innerHTML='<span class="spin"></span> جاری...';
+  $('pb2').classList.add('on');$('gal').style.display='';
+  const tot=files.length;const manualKW=$('kwSS').value.trim();
+  for(let i=0;i<tot;i++){
+    $('pfl').style.width=Math.round(i/tot*100)+'%';$('pnum').textContent=`${i}/${tot}`;setSt(i,'processing');
+    try{
+      $('plbl').textContent=`[${i+1}/${tot}] متن پڑھ رہے ہیں...`;
+      const b=await b64(files[i].file);
+      const text=await readImg(b,files[i].file.type);
+      $('plbl').textContent=`[${i+1}/${tot}] تصویر ڈھونڈ رہے ہیں...`;
+      const img=await findImage(text,manualKW);
+      $('plbl').textContent=`[${i+1}/${tot}] ہیش ٹیگ بنا رہے ہیں...`;
+      const ht=await getHashtags(text);
+      cards.push({text,img,ht});addCard(cards.length-1);setSt(i,'done');
+    }catch(e){setSt(i,'err');console.error(e);$('plbl').textContent='Error: '+e.message;}
+  }
+  $('pfl').style.width='100%';$('pnum').textContent=`${tot}/${tot}`;
+  $('plbl').textContent='✅ سب کارڈ تیار!';$('ghdr').textContent=`✅ تیار کارڈز — ${cards.length}`;
+  btn.innerHTML='✅ مکمل';busy=false;
+}
+
+async function procTX(){
+  const text=$('mt').value.trim();if(!text||busy)return;
+  busy=true;const btn=$('tb');btn.disabled=true;btn.innerHTML='<span class="spin"></span> بن رہا ہے...';
+  $('pb2').classList.add('on');$('pfl').style.width='0%';
+  const manualKW=$('kwTX').value.trim();
+  try{
+    $('plbl').textContent='تصویر ڈھونڈ رہے ہیں...';$('pfl').style.width='30%';
+    const img=await findImage(text,manualKW);
+    $('plbl').textContent='ہیش ٹیگ بنا رہے ہیں...';$('pfl').style.width='70%';
+    const ht=await getHashtags(text);
+    cards.push({text,img,ht});$('gal').style.display='';addCard(cards.length-1);
+    $('ghdr').textContent=`✅ تیار کارڈز — ${cards.length}`;
+    $('plbl').textContent='✅ کارڈ تیار!';$('pfl').style.width='100%';$('mt').value='';
+  }catch(e){$('plbl').textContent='Error: '+e.message;console.error(e);}
+  btn.disabled=false;btn.innerHTML='✨ کارڈ بنائیں';busy=false;
+}
+
+function addCard(i){
+  const c=cards[i];const d=document.createElement('div');d.className='cw';
+  d.innerHTML=`
+    <div class="fc" id="fc${i}">
+      <div class="fci">
+        <img src="${c.img}" crossorigin="anonymous" onerror="this.src='https://picsum.photos/seed/${i+100}/800/450'">
+        <div class="fcio"></div><div class="fcib"></div>
+        <div class="fcbg">Tarikh Ke Raaz</div>
+      </div>
+      <div class="fct">
+        <div class="fck">✦ کیا آپ جانتے ہیں؟ ✦</div>
+        <div class="fcu" id="ft${i}">${c.text}</div>
+        <div class="fcw">@TarikhKeRaaz</div>
+      </div>
+    </div>
+    <div class="ca">
+      <button class="cdl" onclick="dl(${i})">⬇ Download</button>
+      <button class="ced" onclick="edit(${i})">✏ Edit</button>
+      <button class="cht" onclick="showHT(${i})">#️⃣ Tags</button>
+    </div>`;
+  $('cg').appendChild(d);
+}
+
+async function dl(i){
+  const el=$('fc'+i);if(!el)return;
+  const b=el.nextElementSibling.querySelector('.cdl');b.textContent='⏳';b.disabled=true;
+  try{
+    const cv=await html2canvas(el,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#fff'});
+    const a=document.createElement('a');a.download=`tarikh-ke-raaz-${i+1}.png`;
+    a.href=cv.toDataURL('image/png');a.click();
+  }catch(e){alert('ڈاؤنلوڈ میں مسئلہ: '+e.message);}
+  b.textContent='⬇ Download';b.disabled=false;
+}
+
+function edit(i){ei=i;$('eta').value=cards[i].text;$('em').classList.add('on');}
+function saveE(){const t=$('eta').value.trim();if(t&&ei>=0){cards[ei].text=t;$('ft'+ei).textContent=t;}closeE();}
+function closeE(){$('em').classList.remove('on');ei=-1;}
+
+function showHT(i){
+  hi=i;const tags=cards[i].ht||'';
+  const list=$('hlist');list.innerHTML='';
+  tags.split(/\s+/).filter(t=>t.startsWith('#')).forEach(t=>{
+    const s=document.createElement('span');s.className='htag-item';s.textContent=t;list.appendChild(s);
+  });
+  $('hm').classList.add('on');
+}
+function copyHT(){
+  const tags=cards[hi]?.ht||'';
+  try{navigator.clipboard.writeText(tags);}catch{const ta=document.createElement('textarea');ta.value=tags;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}
+  const b=document.querySelector('.hcopy');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy All Hashtags',2000);
+}
+function closeHM(){$('hm').classList.remove('on');hi=-1;}
+</script>
+</body>
+</html>
