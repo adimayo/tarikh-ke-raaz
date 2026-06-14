@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تاریخ کے راز — Pro v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+@font-face{font-family:'Jameel Noori Nastaleeq';src:url('https://cdn.jsdelivr.net/gh/mfd/font@master/JameelNooriNastaleeq.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09080f;--sur:#121020;--sur2:#1a1730;--bdr:#252240;--bdr2:#3a3660;
+  --gold:#e8c97e;--red:#c0392b;--red2:#8b1a1a;--pur:#7c3aed;
+  --txt:#f0eeff;--mut:#8b87a8;
+}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:200px;background:var(--sur);border-left:1px solid var(--bdr);display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;z-index:100}
+.logo{padding:16px 12px;border-bottom:1px solid var(--bdr)}
+.logo h2{font-family:'Noto Nastaliq Urdu',serif;font-size:18px;color:var(--gold)}
+.logo p{font-size:10px;color:var(--mut);font-family:'Inter',sans-serif;direction:ltr}
+.nav{padding:8px;flex:1}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;cursor:pointer;margin-bottom:2px;color:var(--mut);font-size:12px;border:1px solid transparent;direction:ltr;font-family:'Inter',sans-serif;font-weight:500;transition:all 0.2s}
+.ni:hover{background:var(--sur2);color:var(--txt)}.ni.on{background:var(--red2);color:#fff;border-color:var(--red)}
+.ni .ic{font-size:16px;flex-shrink:0}
+.sfooter{padding:10px 8px;border-top:1px solid var(--bdr)}
+.stat{background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:9px 11px;direction:ltr}
+.stat-n{font-size:20px;font-weight:700;color:var(--gold)}
+.stat-l{font-size:10px;color:var(--mut);font-family:'Inter',sans-serif}
+
+/* MAIN */
+.main{margin-right:200px;flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--sur);border-bottom:1px solid var(--bdr);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;direction:ltr;position:sticky;top:0;z-index:50}
+.tt{font-size:14px;font-weight:600;color:var(--txt)}
+.ts{font-size:10px;color:var(--mut);margin-top:1px}
+.con{padding:16px;flex:1}
+
+/* PANELS */
+.panel{display:none}.panel.on{display:block;animation:fi 0.2s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-left:4px}
+
+/* SECTION CARDS */
+.sc{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;padding:14px;margin-bottom:10px}
+.sc-t{font-size:10px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;direction:ltr;font-family:'Inter',sans-serif}
+.fl{font-size:10px;color:var(--mut);margin-bottom:4px;direction:ltr;font-family:'Inter',sans-serif;display:block}
+textarea.fi{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:10px 12px;font-size:16px;line-height:2;direction:rtl;resize:vertical;min-height:90px;transition:border-color 0.2s}
+textarea.fi:focus{outline:none;border-color:var(--pur)}
+input.fi{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:8px 12px;font-family:'Inter',sans-serif;font-size:13px;direction:ltr;transition:border-color 0.2s}
+input.fi:focus{outline:none;border-color:var(--pur)}
+select.fi{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:8px 12px;font-family:'Inter',sans-serif;font-size:13px;direction:ltr}
+.fr{margin-bottom:10px}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;min-height:22px}
+.chip{background:var(--sur2);border:1px solid var(--bdr2);border-radius:14px;padding:3px 10px;font-size:10px;color:var(--gold);cursor:pointer;transition:all 0.2s;direction:ltr;font-family:'Inter',sans-serif}
+.chip:hover,.chip.on{background:var(--red2);border-color:var(--red);color:#fff}
+
+/* FONT GRID */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px}
+.fopt{background:var(--sur2);border:2px solid var(--bdr);border-radius:9px;padding:10px 6px;cursor:pointer;text-align:center;transition:all 0.2s}
+.fopt:hover{border-color:var(--gold)}.fopt.on{border-color:var(--red);background:#200f18}
+.fopt .fs{font-size:17px;color:var(--txt);line-height:1.4;margin-bottom:2px}
+.fopt .fn{font-size:9px;color:var(--mut);font-family:'Inter',sans-serif;direction:ltr}
+
+/* IMAGE SOURCE TABS */
+.itabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.itab{background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:11px;color:var(--mut);font-family:'Inter',sans-serif;direction:ltr;transition:all 0.2s;white-space:nowrap}
+.itab:hover{border-color:var(--gold);color:var(--txt)}.itab.on{background:var(--red2);border-color:var(--red);color:#fff}
+
+/* DROPZONE */
+.dz{border:2px dashed var(--bdr2);border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;position:relative;transition:all 0.2s}
+.dz:hover{border-color:var(--gold);background:rgba(232,201,126,0.03)}
+.dz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-i{font-size:28px;pointer-events:none}.dz-t{font-size:12px;color:var(--gold);pointer-events:none;margin:5px 0 2px}
+.dz-s{font-size:10px;color:var(--mut);pointer-events:none;direction:ltr;font-family:'Inter',sans-serif}
+.dz-b{display:inline-block;background:var(--red2);color:#fff;padding:5px 16px;border-radius:6px;margin-top:7px;font-size:11px;pointer-events:none}
+
+/* IMAGE PREVIEW + CROP */
+.iprev{display:none;border-radius:9px;overflow:hidden;margin-top:8px;background:#000;border:1px solid var(--bdr)}
+.iprev img{width:100%;height:150px;object-fit:cover;display:block;transition:transform 0.2s,filter 0.2s}
+.cbar{display:flex;flex-wrap:wrap;gap:5px;padding:7px;background:var(--sur2)}
+.cbtn{background:var(--sur);border:1px solid var(--bdr);color:var(--mut);padding:4px 9px;border-radius:5px;cursor:pointer;font-size:10px;font-family:'Inter',sans-serif;transition:all 0.2s}
+.cbtn:hover{border-color:var(--gold);color:var(--gold)}
+.srow{padding:5px 9px;background:var(--sur2);display:flex;align-items:center;gap:7px;direction:ltr}
+.srow label{font-size:10px;color:var(--mut);width:65px;font-family:'Inter',sans-serif;flex-shrink:0}
+.srow input[type=range]{flex:1;accent-color:var(--red)}
+
+/* IMAGE SEARCH (Canva-like) */
+.img-search-wrap{margin-bottom:10px}
+.img-search-row{display:flex;gap:7px;margin-bottom:10px}
+.img-search-row input{flex:1;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:8px 12px;font-family:'Inter',sans-serif;font-size:13px;direction:ltr}
+.img-search-row input:focus{outline:none;border-color:var(--pur)}
+.img-search-row button{background:var(--red2);color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;white-space:nowrap}
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.img-item{position:relative;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all 0.2s;aspect-ratio:4/3}
+.img-item img{width:100%;height:100%;object-fit:cover;display:block}
+.img-item:hover{border-color:var(--gold)}
+.img-item.sel{border-color:var(--red);box-shadow:0 0 0 2px var(--red)}
+.img-item .sel-badge{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;display:none;font-family:'Inter',sans-serif}
+.img-item.sel .sel-badge{display:block}
+.img-loading{text-align:center;padding:20px;color:var(--mut);font-size:12px;font-family:'Inter',sans-serif;direction:ltr;grid-column:1/-1}
+
+/* THUMBS */
+.thumbs{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.th{position:relative;width:54px;height:54px}
+.th img{width:100%;height:100%;object-fit:cover;border-radius:6px;border:2px solid var(--bdr);display:block}
+.th .ts{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:10px;background:rgba(0,0,0,0.5);border-radius:0 0 4px 4px}
+
+/* BULK */
+textarea.bta{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:11px 13px;font-family:'Noto Nastaliq Urdu',serif;font-size:16px;line-height:2.1;direction:rtl;resize:vertical;min-height:180px}
+textarea.bta:focus{outline:none;border-color:var(--pur)}
+
+/* BUTTONS */
+.btn{width:100%;padding:11px;border-radius:9px;border:none;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;transition:all 0.2s;margin-bottom:7px}
+.btn-red{background:linear-gradient(135deg,var(--red2),var(--red));color:#fff;box-shadow:0 3px 12px rgba(139,26,26,0.3)}
+.btn-red:hover:not(:disabled){transform:translateY(-1px)}
+.btn-grn{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff}
+.btn-out{background:transparent;border:1px solid var(--bdr2);color:var(--mut)}
+.btn:disabled{background:#1c1020!important;color:#444!important;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* PROGRESS */
+.prog{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:12px;margin-bottom:12px;display:none}
+.prog.on{display:block}
+.prog-s{font-size:11px;color:var(--gold);margin-bottom:6px;direction:ltr;font-family:'Inter',sans-serif}
+.prog-t{background:var(--bg);border-radius:20px;height:5px;overflow:hidden}
+.prog-f{height:100%;background:linear-gradient(90deg,var(--red2),var(--gold));border-radius:20px;transition:width 0.4s;width:0%}
+.prog-n{font-size:10px;color:var(--mut);margin-top:4px;direction:ltr;font-family:'Inter',sans-serif}
+
+/* INFO BOX */
+.info{background:#1a1030;border:1px solid var(--pur);border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:11px;color:#c4b5fd;direction:ltr;font-family:'Inter',sans-serif;line-height:1.5}
+
+/* GALLERY */
+.gal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--bdr);direction:ltr}
+.gal-hdr h3{font-size:13px;font-weight:600;color:var(--gold);font-family:'Inter',sans-serif}
+.gal-dla{background:var(--red2);color:#fff;border:none;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;font-weight:600}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.empty{text-align:center;padding:44px 20px;color:var(--mut)}
+.empty-ic{font-size:40px;margin-bottom:8px}.empty-t{font-size:13px;margin-bottom:4px}
+.empty-s{font-size:10px;direction:ltr;font-family:'Inter',sans-serif}
+
+/* ══ FACT CARD ══ */
+.cs{background:var(--sur);border-radius:9px;overflow:hidden;border:1px solid var(--bdr);box-shadow:0 3px 14px rgba(0,0,0,0.4);animation:fi 0.3s ease}
+
+/* Style A: Reference style (white bg + illustration) */
+.fc-a{background:#f8f6f2;display:flex;flex-direction:column;position:relative}
+.fc-a-text-area{padding:20px 20px 8px;text-align:center}
+.fc-a-category{display:inline-block;background:#111;color:#fff;font-size:11px;padding:4px 14px;border-radius:4px;font-family:'Inter',sans-serif;margin-bottom:14px;letter-spacing:.5px}
+.fc-a-urdu{font-size:19px;line-height:2;color:#111;text-align:right;direction:rtl;margin-bottom:12px}
+.fc-a-img-area{flex:1;min-height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.fc-a-img-area img{max-width:100%;max-height:220px;object-fit:contain;display:block}
+.fc-a-wm{font-size:8px;color:#bbb;text-align:center;padding:6px;font-family:'Inter',sans-serif;background:#f8f6f2}
+
+/* Style B: Original bordered card */
+.fc-b{background:#f5f3ee;display:flex;flex-direction:column;position:relative;border:3px solid var(--pur);overflow:hidden}
+.fc-b-ib{position:absolute;top:5px;left:5px;right:5px;bottom:5px;border:1.5px solid rgba(124,58,237,0.3);pointer-events:none;z-index:10}
+.fc-b-img{position:relative;height:185px;overflow:hidden;background:#1a1a2e;flex-shrink:0}
+.fc-b-img img{width:100%;height:100%;object-fit:cover;display:block}
+.fc-b-fade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(245,243,238,0.96) 100%)}
+.fc-b-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.7);color:var(--gold);font-size:9px;padding:2px 7px;border-radius:4px;font-family:'Inter',sans-serif;z-index:5}
+.fc-b-num{position:absolute;top:8px;left:8px;background:var(--red2);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;font-family:'Inter',sans-serif;z-index:5;font-weight:700}
+.fc-b-body{background:#f5f3ee;padding:12px 14px 8px}
+.fc-b-title{color:#cc0000;font-size:9px;font-weight:700;text-align:center;margin-bottom:6px;font-family:'Inter',sans-serif;letter-spacing:1.2px;text-transform:uppercase}
+.fc-b-urdu{font-size:16px;line-height:2;color:#111;text-align:right;direction:rtl}
+.fc-b-wm{color:#bbb;font-size:7px;text-align:left;margin-top:6px;font-family:'Inter',sans-serif}
+
+.ca{display:flex;gap:5px;padding:8px;background:#100d1e}
+.ca-btn{flex:1;border:none;padding:7px 3px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all 0.2s;font-family:'Inter',sans-serif}
+.ca-dl{background:var(--red2);color:#fff}.ca-dl:hover{background:var(--red)}
+.ca-ed{background:var(--sur2);color:var(--gold);border:1px solid var(--bdr2)}
+.ca-tg{background:#0f2a1a;color:#4ade80;border:1px solid #16a34a}
+
+/* MODALS */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.87);display:none;align-items:center;justify-content:center;z-index:1000;padding:12px}
+.ov.on{display:flex}
+.mb{background:var(--sur);border:1px solid var(--bdr2);border-radius:13px;padding:16px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto}
+.mb-t{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:10px;direction:ltr;font-family:'Inter',sans-serif}
+.mb-acts{display:flex;gap:7px;margin-top:9px}
+.m-sv{flex:1;background:var(--red2);color:#fff;border:none;padding:9px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;font-family:'Inter',sans-serif}
+.m-cn{flex:1;background:var(--sur2);color:var(--mut);border:1px solid var(--bdr);padding:9px;border-radius:7px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif}
+.ht-w{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;direction:ltr;max-height:140px;overflow-y:auto}
+.ht-c{background:#0f2a1a;border:1px solid #16a34a;border-radius:14px;padding:2px 8px;font-size:9px;color:#4ade80;font-family:'Inter',sans-serif}
+.ht-cp{width:100%;background:#16a34a;color:#fff;border:none;padding:8px;border-radius:7px;cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;font-weight:600}
+.ht-cl{width:100%;background:var(--sur2);color:var(--mut);border:1px solid var(--bdr);padding:7px;border-radius:7px;cursor:pointer;font-size:11px;margin-top:5px;font-family:'Inter',sans-serif}
+
+@media(max-width:580px){
+  .sidebar{width:100%;position:static;flex-direction:column}
+  .layout{flex-direction:column}.main{margin-right:0}
+  .nav{display:flex;flex-direction:row;overflow-x:auto;padding:5px;gap:3px}
+  .ni{padding:6px 9px;margin-bottom:0;white-space:nowrap;font-size:10px}
+  .sfooter{display:none}.cg{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr 1fr}
+  .img-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">
+    <h2>تاریخ کے راز</h2>
+    <p>Pro Card Maker v4</p>
+  </div>
+  <nav class="nav">
+    <div class="ni on" onclick="goP(this,'p-single','Single Card','Ek fact → image search → card')">
+      <span class="ic">✍️</span><span>Single Card</span>
+    </div>
+    <div class="ni" onclick="goP(this,'p-file','File Upload','Text file upload → sab cards')">
+      <span class="ic">📂</span><span>File Upload</span>
+    </div>
+    <div class="ni" onclick="goP(this,'p-ss','Screenshot','TikTok screenshots → cards')">
+      <span class="ic">📸</span><span>Screenshot</span>
+    </div>
+    <div class="ni" onclick="goP(this,'p-pdf','PDF Upload','PDF → facts → cards')">
+      <span class="ic">📄</span><span>PDF Upload</span>
+    </div>
+    <div class="ni" onclick="goP(this,'p-gal','Gallery','Sab tayar cards')">
+      <span class="ic">🖼️</span><span>Gallery</span>
+    </div>
+  </nav>
+  <div class="sfooter">
+    <div class="stat">
+      <div class="stat-n" id="sideN">0</div>
+      <div class="stat-l">Cards ready</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+<div class="topbar">
+  <div><div class="tt" id="top-t">Single Card</div><div class="ts" id="top-s">Ek fact → image search → card</div></div>
+  <div style="font-size:10px;color:var(--mut);font-family:'Inter',sans-serif" id="top-c">0 cards</div>
+</div>
+<div class="con">
+
+  <!-- FONT + CARD STYLE -->
+  <div class="sc">
+    <div class="sc-t">🎨 Card Style & Font</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div class="fopt on" id="style-a" onclick="pickStyle('a')">
+        <div style="font-size:13px;color:var(--gold);margin-bottom:2px">📜 Reference Style</div>
+        <div class="fn">Text upar + illustration neeche</div>
+      </div>
+      <div class="fopt" id="style-b" onclick="pickStyle('b')">
+        <div style="font-size:13px;color:var(--gold);margin-bottom:2px">🖼️ Bordered Card</div>
+        <div class="fn">Image upar + text neeche</div>
+      </div>
+    </div>
+    <div class="sc-t" style="margin-top:4px">Font</div>
+    <div class="fgrid" id="fontGrid">
+      <div class="fopt on" onclick="pickFont(this,&quot;'Noto Nastaliq Urdu',serif&quot;)">
+        <div class="fs" style="font-family:'Noto Nastaliq Urdu',serif">نمونہ</div>
+        <div class="fn">Noto Nastaleeq</div>
+      </div>
+      <div class="fopt" onclick="pickFont(this,&quot;'Jameel Noori Nastaleeq',serif&quot;)">
+        <div class="fs" style="font-family:'Jameel Noori Nastaleeq',serif">نمونہ</div>
+        <div class="fn">Jameel Noori</div>
+      </div>
+      <div class="fopt" onclick="pickFont(this,'Georgia,serif')">
+        <div class="fs" style="font-family:Georgia,serif">نمونہ</div>
+        <div class="fn">Classic</div>
+      </div>
+      <div class="fopt" onclick="pickFont(this,'Arial,sans-serif')">
+        <div class="fs" style="font-family:Arial,sans-serif">نمونہ</div>
+        <div class="fn">Modern</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SINGLE CARD ═══ -->
+  <div class="panel on" id="p-single">
+    <div class="sc">
+      <div class="sc-t">📝 Fact لکھیں</div>
+      <div class="fr">
+        <textarea class="fi" id="s-txt" rows="3" placeholder="یہاں اپنا فیکٹ لکھیں..." oninput="autoChips(this.value,'s-chips')"></textarea>
+      </div>
+      <div class="fr">
+        <label class="fl">💡 Suggested keywords — tap to use</label>
+        <div class="chips" id="s-chips"></div>
+      </div>
+      <div class="fr">
+        <label class="fl">#️⃣ Hashtag Topic</label>
+        <input class="fi" id="s-topic" type="text" placeholder="e.g: history, science, amazing facts">
+      </div>
+    </div>
+
+    <!-- IMAGE SOURCE -->
+    <div class="sc">
+      <div class="sc-t">🖼️ Image Source</div>
+      <div class="itabs">
+        <div class="itab on" id="itab-search" onclick="pickISrc('search')">🔍 Image Search</div>
+        <div class="itab" id="itab-upload" onclick="pickISrc('upload')">📁 My Image</div>
+        <div class="itab" id="itab-ai" onclick="pickISrc('ai')">🤖 AI Generate</div>
+        <div class="itab" id="itab-illus" onclick="pickISrc('illus')">🎨 AI Illustration</div>
+      </div>
+
+      <!-- Search (Canva-like) -->
+      <div id="ibox-search">
+        <div class="img-search-row">
+          <input type="text" id="srch-kw" placeholder="Search images... e.g: old man clock time" onkeydown="if(event.key==='Enter')searchImages()">
+          <button onclick="searchImages()">🔍 Search</button>
+        </div>
+        <div class="img-grid" id="img-grid">
+          <div class="img-loading">Type keywords and press Search</div>
+        </div>
+        <div id="sel-img-info" style="margin-top:7px;font-size:11px;color:var(--gold);direction:ltr;font-family:'Inter',sans-serif;display:none">✅ Image selected! Click "Card بنائیں" below.</div>
+      </div>
+
+      <!-- Upload + Crop -->
+      <div id="ibox-upload" style="display:none">
+        <div class="dz">
+          <input type="file" id="s-img-f" accept="image/*" onchange="loadPrev('s-img-f','s-iprev','s-pimg','so')">
+          <div class="dz-i">📁</div><div class="dz-t">Image منتخب کریں</div>
+          <div class="dz-s">JPG · PNG · WEBP</div><div class="dz-b">Browse</div>
+        </div>
+        <div class="iprev" id="s-iprev">
+          <img id="s-pimg" alt="">
+          <div class="cbar">
+            <button class="cbtn" onclick="mv('s-pimg','so','l')">◀</button>
+            <button class="cbtn" onclick="mv('s-pimg','so','r')">▶</button>
+            <button class="cbtn" onclick="mv('s-pimg','so','u')">▲</button>
+            <button class="cbtn" onclick="mv('s-pimg','so','d')">▼</button>
+            <button class="cbtn" onclick="resetI('s-pimg','so')">↺</button>
+          </div>
+          <div class="srow"><label>Zoom</label><input type="range" min="100" max="250" value="100" oninput="iZoom('s-pimg','so',this.value)"></div>
+          <div class="srow"><label>Brightness</label><input type="range" min="50" max="150" value="100" oninput="iBright('s-pimg','so',this.value)"></div>
+        </div>
+      </div>
+
+      <!-- AI Photorealistic -->
+      <div id="ibox-ai" style="display:none">
+        <div class="fr">
+          <label class="fl">🎨 AI Style</label>
+          <select class="fi" id="s-ai-st">
+            <option value="photorealistic cinematic dramatic lighting 4k">📷 Cinematic</option>
+            <option value="dark moody atmospheric dramatic fog">🌑 Dark Moody</option>
+            <option value="colorful vibrant nature landscape bright">🌈 Nature</option>
+            <option value="ancient historical oil painting warm texture">🏛️ Historical Art</option>
+            <option value="space galaxy cosmos stars nebula">🌌 Space</option>
+          </select>
+        </div>
+        <div class="info">⏳ AI image 15-20 sec mein load hogi card appear hone ke baad</div>
+      </div>
+
+      <!-- AI Illustration (Reference style) -->
+      <div id="ibox-illus" style="display:none">
+        <div class="fr">
+          <label class="fl">🎨 Illustration Style</label>
+          <select class="fi" id="s-illus-st">
+            <option value="watercolor illustration minimal white background, old man sitting, melancholic mood, soft colors">👴 Old Man (Reference Style)</option>
+            <option value="watercolor illustration white background, hourglass clock time concept, minimal artistic">⏳ Time/Clock Theme</option>
+            <option value="watercolor illustration white background, nature scene minimal artistic style">🌿 Nature</option>
+            <option value="watercolor illustration white background, book wisdom knowledge concept, minimal">📚 Knowledge/Wisdom</option>
+            <option value="watercolor illustration white background, journey road path concept, minimal artistic">🛤️ Journey/Path</option>
+            <option value="watercolor illustration white background, heart emotion feeling concept">❤️ Emotion/Heart</option>
+            <option value="pencil sketch illustration white background, philosophical concept minimal">✏️ Pencil Sketch</option>
+          </select>
+        </div>
+        <div class="info">🎨 Ye style bilkul reference image jaisi illustration banata hai — white background pe</div>
+      </div>
+    </div>
+
+    <button class="btn btn-red" id="s-btn" onclick="makeSingle()">✨ Card بنائیں</button>
+  </div>
+
+  <!-- ═══ FILE UPLOAD ═══ -->
+  <div class="panel" id="p-file">
+    <div class="info">
+      📄 <strong>How to use:</strong> Ek .txt file banao. Har fact numbering ke saath likho. Upload karo → AI images dhundhega → Cards ban jayenge!
+    </div>
+    <div class="sc">
+      <div class="sc-t">📂 Text File Upload (.txt)</div>
+      <div class="dz">
+        <input type="file" id="txt-file" accept=".txt,text/plain" onchange="loadTxtFile(this)">
+        <div class="dz-i">📄</div>
+        <div class="dz-t">Text File یہاں کلک کریں</div>
+        <div class="dz-s">File format: 1. پہلا فیکٹ &#10; 2. دوسرا فیکٹ &#10; 3. تیسرا فیکٹ</div>
+        <div class="dz-b">Browse .txt File</div>
+      </div>
+      <div id="txt-status" style="margin-top:8px;font-size:11px;color:var(--mut);direction:ltr;font-family:'Inter',sans-serif"></div>
+    </div>
+
+    <div class="sc" id="txt-preview-sc" style="display:none">
+      <div class="sc-t">✏️ Facts Preview — Edit کریں</div>
+      <textarea class="bta" id="txt-preview" style="min-height:150px"></textarea>
+    </div>
+
+    <div class="sc" id="txt-opts-sc" style="display:none">
+      <div class="fr">
+        <label class="fl">🖼️ Image Style for all cards</label>
+        <select class="fi" id="txt-img-mode">
+          <option value="search">🔍 Auto Image Search (Unsplash)</option>
+          <option value="illus">🎨 AI Illustrations (Reference Style)</option>
+          <option value="ai">🤖 AI Photorealistic</option>
+        </select>
+      </div>
+      <div class="fr">
+        <label class="fl">#️⃣ Hashtag Topic</label>
+        <input class="fi" id="txt-topic" type="text" placeholder="e.g: philosophy, history, amazing facts">
+      </div>
+    </div>
+    <button class="btn btn-red" id="txt-btn" style="display:none" onclick="procTxtFile()">📂 File سے Cards بنائیں</button>
+  </div>
+
+  <!-- ═══ SCREENSHOT ═══ -->
+  <div class="panel" id="p-ss">
+    <div class="sc">
+      <div class="sc-t">📸 Screenshots Upload</div>
+      <div class="dz">
+        <input type="file" id="ss-inp" accept="image/*" multiple onchange="addSS(this.files)">
+        <div class="dz-i">📂</div><div class="dz-t">Screenshots منتخب کریں</div>
+        <div class="dz-s">Multiple files OK · AI text automatically read karega</div><div class="dz-b">Browse</div>
+      </div>
+      <div class="thumbs" id="ss-thumbs"></div>
+    </div>
+    <div class="sc">
+      <div class="sc-t">🔑 Image Keywords</div>
+      <input class="fi" id="ss-kw" type="text" placeholder="e.g: history ancient, science facts, human body">
+    </div>
+    <button class="btn btn-red" id="ss-btn" style="display:none" onclick="procSS()">✨ Cards بنائیں</button>
+  </div>
+
+  <!-- ═══ PDF ═══ -->
+  <div class="panel" id="p-pdf">
+    <div class="sc">
+      <div class="sc-t">📄 PDF Upload</div>
+      <div class="dz">
+        <input type="file" id="pdf-inp" accept=".pdf,application/pdf" onchange="loadPDF(this)">
+        <div class="dz-i">📄</div><div class="dz-t">PDF یہاں کلک کریں</div>
+        <div class="dz-s">AI PDF se facts nikal kar cards banayega</div><div class="dz-b">Browse PDF</div>
+      </div>
+      <div id="pdf-st" style="margin-top:8px;font-size:11px;color:var(--mut);direction:ltr;font-family:'Inter',sans-serif"></div>
+    </div>
+    <div class="sc" id="pdf-esc" style="display:none">
+      <div class="sc-t">✏️ Extracted Facts</div>
+      <textarea class="bta" id="pdf-txt" style="min-height:140px"></textarea>
+    </div>
+    <div class="sc" id="pdf-osc" style="display:none">
+      <div class="fr"><label class="fl">🔑 Image Keywords</label><input class="fi" id="pdf-kw" type="text" placeholder="e.g: history, ancient, science"></div>
+      <div class="fr"><label class="fl">#️⃣ Hashtag Topic</label><input class="fi" id="pdf-topic" type="text" placeholder="e.g: history facts"></div>
+    </div>
+    <button class="btn btn-red" id="pdf-btn" style="display:none" onclick="procPDF()">📖 PDF سے Cards بنائیں</button>
+  </div>
+
+  <!-- ═══ GALLERY ═══ -->
+  <div class="panel" id="p-gal">
+    <div id="gal-empty" class="empty">
+      <div class="empty-ic">🖼️</div><div class="empty-t">کوئی card نہیں</div>
+      <div class="empty-s">Cards banao aur yahan dekho</div>
+    </div>
+    <div id="gal-con" style="display:none">
+      <div class="gal-hdr">
+        <h3 id="gal-t">Cards (0)</h3>
+        <button class="gal-dla" onclick="dlAll()">⬇ Download All</button>
+      </div>
+      <div class="cg" id="cg"></div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="prog" id="prog">
+    <div class="prog-s" id="prog-s">...</div>
+    <div class="prog-t"><div class="prog-f" id="prog-f"></div></div>
+    <div class="prog-n" id="prog-n"></div>
+  </div>
+
+</div></div></div>
+
+<!-- EDIT MODAL -->
+<div class="ov" id="ov-edit">
+  <div class="mb">
+    <div class="mb-t">✏️ Text Edit</div>
+    <textarea class="fi" id="edit-ta" rows="5" style="min-height:100px;direction:rtl;font-family:'Noto Nastaliq Urdu',serif;font-size:16px;line-height:2"></textarea>
+    <div class="mb-acts"><button class="m-sv" onclick="saveEdit()">✅ Save</button><button class="m-cn" onclick="closeEdit()">Cancel</button></div>
+  </div>
+</div>
+
+<!-- HT MODAL -->
+<div class="ov" id="ov-ht">
+  <div class="mb">
+    <div class="mb-t">#️⃣ Hashtags</div>
+    <div class="ht-w" id="ht-list"></div>
+    <button class="ht-cp" onclick="copyHT()">📋 Copy All</button>
+    <button class="ht-cl" onclick="closeHT()">Close</button>
+  </div>
+</div>
+
+<script>
+const MODEL='claude-sonnet-4-20250514';
+const UKEY='BVnR8OWvXnMWMKXgFlV9rrD1E1aSxNDoRCFhg2b6DGA';
+let cards=[],busy=false,editIdx=-1,htIdx=-1;
+let curFont="'Noto Nastaliq Urdu',serif", cardStyle='a';
+let imgSrc='search', selImgUrl='', ssFiles=[];
+let offs={};
+const $=id=>document.getElementById(id);
+
+// NAV
+function goP(el,pid,t,s){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  $(pid).classList.add('on');
+  $('top-t').textContent=t;$('top-s').textContent=s;
+  if(pid==='p-gal')refGal();
+}
+
+// STYLE + FONT
+function pickStyle(s){
+  cardStyle=s;
+  ['a','b'].forEach(x=>$('style-'+x).classList.toggle('on',x===s));
+}
+function pickFont(el,f){
+  document.querySelectorAll('#fontGrid .fopt').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');curFont=f;
+  document.querySelectorAll('.fc-urdu,.fc-a-urdu,.fc-b-urdu').forEach(x=>x.style.fontFamily=curFont);
+}
+
+// IMAGE SOURCE
+function pickISrc(s){
+  imgSrc=s;selImgUrl='';
+  ['search','upload','ai','illus'].forEach(x=>$('itab-'+x).classList.toggle('on',x===s));
+  ['search','upload','ai','illus'].forEach(x=>$('ibox-'+x).style.display=x===s?'block':'none');
+}
+
+// IMAGE SEARCH (Canva-like)
+let selImgEl=null;
+async function searchImages(){
+  const kw=$('srch-kw').value.trim();
+  if(!kw)return;
+  const grid=$('img-grid');
+  grid.innerHTML='<div class="img-loading"><span class="spin"></span> Searching...</div>';
+  $('sel-img-info').style.display='none';
+  selImgUrl='';selImgEl=null;
+  try{
+    const r=await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(kw)}&per_page=12&orientation=squarish&client_id=${UKEY}`);
+    if(!r.ok)throw new Error('API error');
+    const d=await r.json();
+    if(!d.results||d.results.length===0){grid.innerHTML='<div class="img-loading">No images found. Try different keywords.</div>';return;}
+    grid.innerHTML='';
+    d.results.forEach(photo=>{
+      const item=document.createElement('div');item.className='img-item';
+      item.innerHTML=`<img src="${photo.urls.small}" alt="" loading="lazy"><div class="sel-badge">✓ Selected</div>`;
+      item.onclick=()=>{
+        if(selImgEl){selImgEl.classList.remove('sel');}
+        item.classList.add('sel');
+        selImgEl=item;
+        selImgUrl=photo.urls.regular;
+        $('sel-img-info').style.display='block';
+      };
+      grid.appendChild(item);
+    });
+  }catch(e){grid.innerHTML=`<div class="img-loading">Error: ${e.message}</div>`;}
+}
+
+// IMAGE UPLOAD + CROP
+function loadPrev(inp,boxId,imgId,key){
+  const f=$(inp).files[0];if(!f)return;
+  $(imgId).src=URL.createObjectURL(f);
+  offs[key]={x:0,y:0,z:100,b:100};
+  applyO(imgId,offs[key]);$(boxId).style.display='block';
+}
+function applyO(id,o){$(id).style.transform=`scale(${o.z/100}) translate(${o.x}px,${o.y}px)`;$(id).style.filter=`brightness(${o.b}%)`;}
+function mv(id,k,d){const o=offs[k]||{x:0,y:0,z:100,b:100};const s=13;if(d==='l')o.x+=s;if(d==='r')o.x-=s;if(d==='u')o.y+=s;if(d==='d')o.y-=s;offs[k]=o;applyO(id,o);}
+function iZoom(id,k,v){const o=offs[k]||{x:0,y:0,z:100,b:100};o.z=parseInt(v);offs[k]=o;applyO(id,o);}
+function iBright(id,k,v){const o=offs[k]||{x:0,y:0,z:100,b:100};o.b=parseInt(v);offs[k]=o;applyO(id,o);}
+function resetI(id,k){offs[k]={x:0,y:0,z:100,b:100};applyO(id,offs[k]);}
+
+// AUTO KEYWORD CHIPS
+const KM={'زمین':'earth planet','دماغ':'brain mind','سمندر':'ocean sea','خلا':'space cosmos','آگ':'fire flame','پانی':'water drop','تاریخ':'history ancient','سائنس':'science','پہاڑ':'mountain','سورج':'sun solar','پیسہ':'money finance','وقت':'time clock','پھول':'flower nature','شیر':'lion wildlife','بادل':'clouds sky','بارش':'rain storm','روشنی':'light rays','کتاب':'book library','آنکھ':'eye vision','دل':'heart emotion'};
+let kwT=null;
+function autoChips(txt,cid){
+  clearTimeout(kwT);
+  kwT=setTimeout(()=>{
+    const found=new Set();
+    Object.keys(KM).forEach(u=>{if(txt.includes(u))found.add(KM[u]);});
+    ['amazing','philosophy','history','nature','science','knowledge'].forEach(k=>found.add(k));
+    const b=$(cid);b.innerHTML='';
+    [...found].slice(0,10).forEach(kw=>{
+      const c=document.createElement('div');c.className='chip';c.textContent=kw;
+      c.onclick=()=>{c.classList.toggle('on');$('srch-kw').value=[...b.querySelectorAll('.chip.on')].map(x=>x.textContent).join(' ');};
+      b.appendChild(c);
+    });
+  },300);
+}
+
+// HELPERS
+function b64f(file){return new Promise((r,j)=>{const x=new FileReader();x.onload=e=>r(e.target.result.split(',')[1]);x.onerror=j;x.readAsDataURL(file);});}
+function b64arr(file){return new Promise((r,j)=>{const x=new FileReader();x.onload=e=>r(new Uint8Array(e.target.result));x.onerror=j;x.readAsArrayBuffer(file);});}
+
+async function claude(msgs,mt=500){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:mt,messages:msgs})});
+  const d=await r.json();if(d.error)throw new Error(d.error.message);
+  return d.content.map(b=>b.text||'').join('').trim();
+}
+
+async function aiReadImg(b,mime){
+  return claude([{role:'user',content:[
+    {type:'image',source:{type:'base64',media_type:mime,data:b}},
+    {type:'text',text:'Is image mein jo Urdu text hai woh copy karo. Sirf main sentences. Headings, channel name, watermark mat likho.'}
+  ]}]);
+}
+
+// Claude generates keywords per fact
+async function getKWForFact(fact){
+  try{
+    const kw=await claude([{role:'user',content:`Urdu text: "${fact}"\nGive 3 specific English keywords for Unsplash image search that visually represent this.\nExamples: "old man bench hourglass", "earth molten core", "human brain neurons"\nReply ONLY keywords, nothing else.`}],80);
+    return kw.trim();
+  }catch{return 'amazing facts';}
+}
+
+async function getUnsplash(kw,seed){
+  const queries=[kw,kw.split(' ').slice(0,2).join(' '),kw.split(' ')[0]];
+  for(const q of queries){
+    try{
+      const r=await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=10&orientation=landscape&client_id=${UKEY}`);
+      if(r.ok){const d=await r.json();if(d.results?.length>0){const p=d.results[Math.floor(Math.random()*Math.min(5,d.results.length))];if(p.urls?.regular)return p.urls.regular;}}
+    }catch{}
+  }
+  return `https://picsum.photos/seed/${seed||Math.floor(Math.random()*9999)}/800/500`;
+}
+
+function getAiImg(prompt,style){
+  const p=`${prompt}, ${style}, no text no watermark no words`;
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(p)}?width=800&height=800&seed=${Math.floor(Math.random()*99999)}&nologo=true`;
+}
+
+function makeHT(topic){
+  const base=['#TarikhKeRaaz','#تاریخ_کے_راز','#UrduFacts','#اردو_فیکٹس','#DidYouKnow','#کیا_آپ_جانتے_ہیں','#AmazingFacts','#Pakistan','#Knowledge','#UrduContent','#TikTokUrdu','#Viral','#Facts','#Science','#History','#Education','#حیرت_انگیز_باتیں','#علم','#پاکستان','#Amazing'];
+  const tt=topic?topic.split(',').map(t=>'#'+t.trim().replace(/\s+/g,'_')):[];
+  return [...tt,...base].slice(0,20).join(' ');
+}
+
+function setProg(s,p,n){$('prog').classList.add('on');$('prog-s').textContent=s;$('prog-f').style.width=p+'%';$('prog-n').textContent=n||'';}
+function hideProg(){setTimeout(()=>{$('prog').classList.remove('on');$('prog-f').style.width='0%';},3000);}
+
+// SINGLE CARD
+async function makeSingle(){
+  const text=$('s-txt').value.trim();
+  const topic=$('s-topic').value.trim();
+  if(!text){alert('فیکٹ لکھیں!');return;}
+  if(imgSrc==='search'&&!selImgUrl){alert('پہلے image search کریں اور کوئی image select کریں!');return;}
+  if(imgSrc==='upload'&&!$('s-img-f').files[0]){alert('Image منتخب کریں!');return;}
+  if(busy)return;busy=true;
+  const btn=$('s-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> بن رہا ہے...';
+  setProg('Card بن رہا ہے...',60,'');
+  try{
+    let img;
+    if(imgSrc==='search') img=selImgUrl;
+    else if(imgSrc==='upload') img=URL.createObjectURL($('s-img-f').files[0]);
+    else if(imgSrc==='ai') img=getAiImg(text,$('s-ai-st').value);
+    else img=getAiImg(text,$('s-illus-st').value);
+    addCard(text,img,makeHT(topic));
+    setProg('✅ Card تیار!',100,'');
+    $('s-txt').value='';$('s-topic').value='';$('s-chips').innerHTML='';
+    selImgUrl='';if(selImgEl){selImgEl.classList.remove('sel');selImgEl=null;}
+    $('sel-img-info').style.display='none';
+    document.querySelectorAll('.ni')[4].click();
+  }catch(e){setProg('Error: '+e.message,0,'');}
+  btn.disabled=false;btn.innerHTML='✨ Card بنائیں';busy=false;hideProg();
+}
+
+// TXT FILE UPLOAD
+function loadTxtFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const txt=e.target.result;
+    $('txt-status').textContent='';
+    $('txt-preview').value=txt;
+    const count=txt.split('\n').filter(l=>l.trim().length>2).length;
+    $('txt-status').textContent=`✅ File loaded — ${count} lines found. Edit if needed then click "Cards بنائیں"`;
+    $('txt-preview-sc').style.display='block';
+    $('txt-opts-sc').style.display='block';
+    $('txt-btn').style.display='block';
+  };
+  reader.onerror=()=>$('txt-status').textContent='❌ File read error';
+  reader.readAsText(file,'UTF-8');
+}
+
+async function procTxtFile(){
+  const raw=$('txt-preview').value.trim();
+  const imgMode=$('txt-img-mode').value;
+  const topic=$('txt-topic').value.trim();
+  if(!raw){alert('File content khali hai!');return;}
+  // Parse facts — support numbered and plain lines
+  const lines=raw.split('\n').map(l=>l.replace(/^\d+[\.\)\-\s]+/,'').trim()).filter(l=>l.length>3);
+  if(!lines.length){alert('Koi fact nahi mila!');return;}
+  if(busy)return;busy=true;
+  const btn=$('txt-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> بن رہے ہیں...';
+  const tot=lines.length;
+  for(let i=0;i<tot;i++){
+    setProg(`Card ${i+1}/${tot} بن رہا ہے...`,Math.round((i+1)/tot*100),`${i+1}/${tot}`);
+    let img;
+    try{
+      if(imgMode==='search'){
+        // Claude generates keywords for each fact
+        const kw=await getKWForFact(lines[i]);
+        img=await getUnsplash(kw,i+Date.now());
+      }else if(imgMode==='illus'){
+        img=getAiImg(lines[i],'watercolor illustration white background minimal artistic style, no text');
+      }else{
+        img=getAiImg(lines[i],'photorealistic cinematic dramatic lighting 4k, no text');
+      }
+    }catch{img=`https://picsum.photos/seed/${i+50}/800/500`;}
+    addCard(lines[i],img,makeHT(topic),i+1);
+    await new Promise(r=>setTimeout(r,150));
+  }
+  setProg(`✅ ${tot} Cards تیار!`,100,'');
+  $('dl-all-btn-txt')&&($('dl-all-btn-txt').style.display='block');
+  btn.innerHTML=`✅ مکمل (${tot})`;busy=false;hideProg();
+  document.querySelectorAll('.ni')[4].click();
+}
+
+// SCREENSHOTS
+function addSS(fl){
+  Array.from(fl).filter(f=>f.type.startsWith('image/')).forEach(f=>ssFiles.push({file:f,url:URL.createObjectURL(f),st:'p'}));
+  drawSST();$('ss-btn').style.display=ssFiles.length?'block':'none';$('ss-inp').value='';
+}
+function drawSST(){
+  const b=$('ss-thumbs');b.innerHTML='';
+  const ic={p:'',processing:'⟳',done:'✅',err:'❌'};const cl={p:'var(--bdr)',processing:'#d97706',done:'#16a34a',err:'#dc2626'};
+  ssFiles.forEach(f=>{
+    const d=document.createElement('div');d.className='th';
+    d.innerHTML=`<img src="${f.url}" style="border-color:${cl[f.st]}"><div class="ts">${ic[f.st]}</div>`;
+    b.appendChild(d);
+  });
+}
+function setSS(i,s){ssFiles[i].st=s;drawSST();}
+
+async function procSS(){
+  if(!ssFiles.length||busy)return;
+  const kw=$('ss-kw').value.trim()||'amazing facts';
+  busy=true;const btn=$('ss-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> جاری...';
+  const tot=ssFiles.length;
+  for(let i=0;i<tot;i++){
+    setProg(`[${i+1}/${tot}] Text پڑھ رہے ہیں...`,Math.round(i/tot*100),`${i}/${tot}`);
+    setSS(i,'processing');
+    try{
+      const b=await b64f(ssFiles[i].file);
+      const text=await aiReadImg(b,ssFiles[i].file.type);
+      setProg(`[${i+1}/${tot}] Image ڈھونڈ رہے ہیں...`,Math.round(i/tot*100+40/tot),'');
+      const factKW=await getKWForFact(text);
+      const img=await getUnsplash(factKW,i+1);
+      addCard(text,img,makeHT(''));setSS(i,'done');
+    }catch(e){setSS(i,'err');console.error(e);}
+  }
+  setProg('✅ سب Cards تیار!',100,`${tot}/${tot}`);
+  btn.innerHTML='✅ مکمل';busy=false;hideProg();
+  document.querySelectorAll('.ni')[4].click();
+}
+
+// PDF
+async function loadPDF(input){
+  const file=input.files[0];if(!file)return;
+  $('pdf-st').textContent='📄 PDF پڑھا جا رہا ہے...';$('pdf-btn').style.display='none';
+  $('pdf-esc').style.display='none';$('pdf-osc').style.display='none';
+  try{
+    const data=await b64arr(file);
+    const b=btoa(data.reduce((s,x)=>s+String.fromCharCode(x),''));
+    $('pdf-st').textContent='🤖 AI facts نکال رہا ہے...';
+    const txt=await claude([{role:'user',content:[
+      {type:'document',source:{type:'base64',media_type:'application/pdf',data:b}},
+      {type:'text',text:'Is PDF se important facts numbered list mein nikaalo.\nFormat:\n1. پہلا فیکٹ\n2. دوسرا فیکٹ\nHar fact complete Urdu sentence. Max 20 facts.'}
+    ]}],3000);
+    $('pdf-txt').value=txt;
+    const count=txt.split('\n').filter(l=>/^\d+/.test(l.trim())).length;
+    $('pdf-st').textContent=`✅ ${count} facts نکل گئے!`;
+    $('pdf-esc').style.display='block';$('pdf-osc').style.display='block';$('pdf-btn').style.display='block';
+  }catch(e){$('pdf-st').textContent='❌ Error: '+e.message;}
+}
+
+async function procPDF(){
+  const raw=$('pdf-txt').value.trim();
+  const kw=$('pdf-kw').value.trim()||'history facts';
+  const topic=$('pdf-topic').value.trim();
+  if(!raw){alert('Text khali!');return;}
+  const facts=raw.split('\n').map(l=>l.replace(/^\d+[\.\)\-\s]+/,'').trim()).filter(l=>l.length>3);
+  if(!facts.length){alert('Koi fact nahi mila!');return;}
+  if(busy)return;busy=true;
+  const btn=$('pdf-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Cards بن رہے ہیں...';
+  for(let i=0;i<facts.length;i++){
+    setProg(`PDF Card ${i+1}/${facts.length}...`,Math.round((i+1)/facts.length*100),`${i+1}/${facts.length}`);
+    const factKW=await getKWForFact(facts[i]);
+    const img=await getUnsplash(factKW,i+Date.now());
+    addCard(facts[i],img,makeHT(topic),i+1);
+    await new Promise(r=>setTimeout(r,150));
+  }
+  setProg(`✅ ${facts.length} Cards!`,100,'');
+  btn.innerHTML=`✅ مکمل (${facts.length})`;busy=false;hideProg();
+  document.querySelectorAll('.ni')[4].click();
+}
+
+// ADD CARD
+function addCard(text,img,ht,num){
+  const i=cards.length;cards.push({text,img,ht,num:num||null});
+  updateCount();
+  const nb=num?`<div class="fc-b-num">#${num}</div>`:'';
+  let cardHTML='';
+  if(cardStyle==='a'){
+    // Reference style: text upar, illustration neeche
+    cardHTML=`
+      <div class="fc-a" id="fc${i}">
+        <div class="fc-a-text-area">
+          <div class="fc-a-category">تاریخ کے راز</div>
+          <div class="fc-a-urdu" style="font-family:${curFont}">${text}</div>
+        </div>
+        <div class="fc-a-img-area">
+          <img src="${img}" crossorigin="anonymous" onerror="this.src='https://picsum.photos/seed/${i+20}/500/500'" style="max-height:220px;object-fit:contain">
+        </div>
+        <div class="fc-a-wm">@TarikhKeRaaz</div>
+      </div>`;
+  }else{
+    // Bordered card: image upar, text neeche
+    cardHTML=`
+      <div class="fc-b" id="fc${i}">
+        <div class="fc-b-ib"></div>
+        <div class="fc-b-img">
+          <img src="${img}" crossorigin="anonymous" onerror="this.src='https://picsum.photos/seed/${i+20}/800/450'">
+          <div class="fc-b-fade"></div>${nb}
+          <div class="fc-b-badge">تاریخ کے راز</div>
+        </div>
+        <div class="fc-b-body">
+          <div class="fc-b-title">تاریخ کے راز</div>
+          <div class="fc-b-urdu" style="font-family:${curFont}">${text}</div>
+          <div class="fc-b-wm">@TarikhKeRaaz</div>
+        </div>
+      </div>`;
+  }
+  const d=document.createElement('div');d.className='cs';
+  d.innerHTML=cardHTML+`
+    <div class="ca">
+      <button class="ca-btn ca-dl" onclick="dlCard(${i})">⬇ Download</button>
+      <button class="ca-btn ca-ed" onclick="openEdit(${i})">✏ Edit</button>
+      <button class="ca-btn ca-tg" onclick="openHT(${i})">#️⃣ Tags</button>
+    </div>`;
+  $('cg').appendChild(d);refGal();
+}
+
+function updateCount(){const n=cards.length;$('sideN').textContent=n;$('top-c').textContent=n+' cards';$('gal-t').textContent=`Cards (${n})`;}
+function refGal(){$('gal-empty').style.display=cards.length?'none':'block';$('gal-con').style.display=cards.length?'block':'none';}
+
+// DOWNLOAD
+async function dlCard(i){
+  const el=$('fc'+i);if(!el)return;
+  const shell=el.closest('.cs');
+  const btns=shell.querySelectorAll('.ca-btn');btns.forEach(b=>b.disabled=true);btns[0].textContent='⏳';
+  try{
+    await new Promise(r=>setTimeout(r,400));
+    const cv=await html2canvas(el,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#f8f6f2',logging:false,imageTimeout:15000});
+    const a=document.createElement('a');a.download=`tarikh-ke-raaz-${i+1}.png`;a.href=cv.toDataURL('image/png');a.click();
+  }catch(e){
+    alert('Download failed. Retry or take screenshot.');console.error(e);
+  }
+  btns.forEach(b=>b.disabled=false);btns[0].textContent='⬇ Download';
+}
+async function dlAll(){for(let i=0;i<cards.length;i++){await dlCard(i);await new Promise(r=>setTimeout(r,700));}}
+
+// EDIT
+function openEdit(i){editIdx=i;$('edit-ta').value=cards[i].text;$('ov-edit').classList.add('on');}
+function saveEdit(){
+  const t=$('edit-ta').value.trim();
+  if(t&&editIdx>=0){
+    cards[editIdx].text=t;
+    const el=document.querySelector(`#fc${editIdx} .fc-a-urdu, #fc${editIdx} .fc-b-urdu`);
+    if(el)el.textContent=t;
+  }
+  closeEdit();
+}
+function closeEdit(){$('ov-edit').classList.remove('on');editIdx=-1;}
+
+// HASHTAGS
+function openHT(i){
+  htIdx=i;const list=$('ht-list');list.innerHTML='';
+  (cards[i].ht||'').split(/\s+/).filter(t=>t.startsWith('#')).forEach(t=>{
+    const s=document.createElement('span');s.className='ht-c';s.textContent=t;list.appendChild(s);
+  });
+  $('ov-ht').classList.add('on');
+}
+function copyHT(){
+  const t=cards[htIdx]?.ht||'';
+  try{navigator.clipboard.writeText(t);}catch{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}
+  const b=document.querySelector('.ht-cp');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy All',2000);
+}
+function closeHT(){$('ov-ht').classList.remove('on');htIdx=-1;}
+
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o){closeEdit();closeHT();}}));
+</script>
+</body>
+</html>
